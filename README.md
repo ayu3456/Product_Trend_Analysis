@@ -42,6 +42,28 @@ A production-ready NLP application that monitors public sentiment for brands acr
    streamlit run dashboard/app.py
    ```
 
+## 🌐 Deployment
+
+### Option 1: Streamlit Community Cloud (Recommended)
+1. Fork this repository.
+2. Sign in to [Streamlit Cloud](https://share.streamlit.io/).
+3. Connect your GitHub repo and point the main file to `dashboard/app.py`.
+4. It will automatically use `packages.txt` and `requirements.txt` to set up the environment.
+
+### Option 2: Render
+1. Create a new **Web Service** on Render.
+2. Connect this repository.
+3. Render will detect `render.yaml` (Blueprint) or you can manually set:
+   - **Build Command:** `./build.sh`
+   - **Start Command:** `streamlit run dashboard/app.py --server.port $PORT`
+
+### Option 3: Docker
+Use the provided `Dockerfile` to deploy on any platform supporting containers (Railway, Fly.io, AWS ECS):
+```bash
+docker build -t sentiment-dashboard .
+docker run -p 8501:8501 sentiment-dashboard
+```
+
 ## 🛠️ Key Features
 
 - **Multi-Platform Scraping:** Uses Playwright for robust, headless data collection from Reddit, Amazon, and Twitter.
