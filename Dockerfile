@@ -4,11 +4,12 @@ FROM python:3.9-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies for Playwright and SQLite
-RUN apt-get update && apt-get install -y \
+# Install system dependencies
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     build-essential \
     curl \
-    software-properties-common \
     git \
     libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
