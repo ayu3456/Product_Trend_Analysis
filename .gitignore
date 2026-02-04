@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+sentiment_dashboard.db
+*.log
+.env
