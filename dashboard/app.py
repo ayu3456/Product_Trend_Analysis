@@ -17,6 +17,8 @@ from preprocessing.clean_text import TextPreprocessor
 from models.sentiment_model import SentimentAnalyzer
 from database.db import DatabaseManager
 from analytics.trends import SentimentAnalytics
+import random
+import datetime
 
 # Page Config
 st.set_page_config(page_title="Brand Sentiment Dashboard", layout="wide", page_icon="📊")
@@ -38,6 +40,8 @@ brand_query = st.sidebar.text_input("Brand/Product Keyword", placeholder="e.g. i
 platforms = st.sidebar.multiselect("Platforms", ["Reddit", "Amazon", "Twitter"], default=["Reddit", "Amazon"])
 model_choice = st.sidebar.selectbox("Sentiment Model", ["BERT", "RoBERTa"])
 max_posts = st.sidebar.slider("Max posts per platform", 5, 50, 20)
+
+simulate_mode = st.sidebar.checkbox("Simulate Data (if scrapers blocked)", value=False)
 
 # Main Title
 st.title("🛡️ Multi-Platform Brand Sentiment & Trend Dashboard")
@@ -85,10 +89,49 @@ async def run_analysis(keyword, selected_platforms, model_name, limit):
     status_text.text("Analysis Complete!")
     return True
 
+def run_simulation(keyword, selected_platforms, model_name, limit):
+    status_text = st.empty()
+    status_text.text("Simulating Data Analysis...")
+    analyzer = SentimentAnalyzer(model_name)
+    
+    samples = [
+        f"I think {keyword} is absolutely amazing! The best in the market.",
+        f"Really disappointed with {keyword}. It broke after two days.",
+        f"Standard performance from {keyword}. Nothing revolutionary but does the job.",
+        f"The price of {keyword} is way too high for what you get.",
+        f"Highly recommend {keyword} to all my friends! #winner",
+        f"Stay away from {keyword}. Terrible customer support.",
+    ]
+    
+    all_sim_data = []
+    for platform in selected_platforms:
+        for _ in range(limit // 2): # Just a few per platform
+            text = random.choice(samples)
+            item = {
+                "platform": platform,
+                "keyword": keyword,
+                "text": text,
+                "url": f"https://{platform.lower()}.com/mock",
+                "timestamp": (datetime.datetime.now() - datetime.timedelta(days=random.randint(0, 7))).isoformat()
+            }
+            # Clean and Analyze
+            cleaned = preprocessor.clean(item['text'])
+            sentiment = analyzer.predict(cleaned)
+            # Store
+            raw_id = db.insert_raw_post(item)
+            proc_id = db.insert_processed_post(raw_id, cleaned)
+            db.insert_sentiment_result(proc_id, sentiment['label'], sentiment['score'], model_name)
+    
+    status_text.text("Simulation Complete!")
+    return True
+
 if st.sidebar.button("🚀 Analyze Now"):
     if brand_query:
-        with st.spinner("Processing... This may take a minute."):
-            asyncio.run(run_analysis(brand_query, platforms, model_choice, max_posts))
+        with st.spinner("Processing..."):
+            if simulate_mode:
+                run_simulation(brand_query, platforms, model_choice, max_posts)
+            else:
+                asyncio.run(run_analysis(brand_query, platforms, model_choice, max_posts))
     else:
         st.error("Please enter a brand or product keyword.")
 
