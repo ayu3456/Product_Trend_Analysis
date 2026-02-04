@@ -1,0 +1,17 @@
+libnss3
+libatk-bridge2.0-0
+libgtk-3-0
+libasound2
+libgbm1
+libxkbcommon0
+libpango-1.0-0
+libcairo2
+libx11-6
+libxcomposite1
+libxdamage1
+libxext6
+libxfixes3
+libxi6
+libxrandr2
+libxrender1
+libxtst6

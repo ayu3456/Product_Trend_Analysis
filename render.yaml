@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: brand-sentiment-dashboard
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "streamlit run dashboard/app.py"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.6
+      - key: STREAMLIT_SERVER_PORT
+        value: 10000
+      - key: STREAMLIT_SERVER_HEADLESS
+        value: "true"
