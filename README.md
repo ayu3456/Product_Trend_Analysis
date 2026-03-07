@@ -86,5 +86,3 @@ docker run -p 8501:8501 sentiment-dashboard
 - **Contextual Sentiment:** Current models analyze individual posts; future updates could use LLMs (GPT-4/Llama 3) for deeper contextual understanding of sarcasm.
 
 ---
-**Author:** Antigravity (Senior ML Engineer)
-**License:** MIT
