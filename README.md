@@ -25,19 +25,35 @@ A production-ready NLP application that monitors public sentiment for brands acr
    |-- SQLite Database
 ```
 
-## 🚀 Setup Instructions
+## 🚀 Quick Start
 
-1. **Install Dependencies:**
+1. **Prerequisites:**
+   - Python 3.9 - 3.11 (Python 3.11 recommended)
+   - [Optional] CUDA-enabled GPU for faster inference
+
+2. **Clone and Setup Environment:**
    ```bash
-   pip install -r requirements.txt
+   git clone <your-repo-url>
+   cd Product_Trend_Analysis
+   # Create a virtual environment
+   python3.11 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-2. **Install Playwright Browsers:**
+3. **Install Dependencies:**
    ```bash
+   pip install --upgrade pip
+   pip install -r requirements.txt
    playwright install chromium
    ```
 
-3. **Run the Dashboard:**
+4. **[Optional] Seed Demo Data:**
+   If you want to explore the dashboard immediately without scraping:
+   ```bash
+   python seed_demo.py
+   ```
+
+5. **Run the Dashboard:**
    ```bash
    streamlit run dashboard/app.py
    ```

@@ -4,8 +4,15 @@ from models.sentiment_model import SentimentAnalyzer
 import datetime
 import random
 
+import yaml
+
+def load_config():
+    with open("config.yaml", 'r') as f:
+        return yaml.safe_load(f)
+
 def seed_data(keyword="iPhone"):
-    db = DatabaseManager()
+    config = load_config()
+    db = DatabaseManager(config['database']['db_path'])
     preprocessor = TextPreprocessor()
     analyzer = SentimentAnalyzer("BERT") # Use BERT for speed
     

@@ -65,7 +65,7 @@ class SentimentAnalytics:
     def get_top_examples(df: pd.DataFrame, n: int = 3) -> Dict[str, pd.DataFrame]:
         """Returns the most positive and most negative posts."""
         if df.empty:
-            return {"postive": pd.DataFrame(), "negative": pd.DataFrame()}
+            return {"positive": pd.DataFrame(), "negative": pd.DataFrame()}
             
         positive = df.sort_values('confidence_score', ascending=False)[df['sentiment_label'] == 'POSITIVE'].head(n)
         negative = df.sort_values('confidence_score', ascending=False)[df['sentiment_label'] == 'NEGATIVE'].head(n)
