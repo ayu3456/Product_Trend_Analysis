@@ -1,35 +1,26 @@
-# Use a more robust base image (Full Python instead of Slim) 
-# to ensure Playwright and ML dependencies have a stable environment.
-FROM python:3.9
+# Change to official Microsoft Playwright Python image for pre-installed dependencies
+FROM mcr.microsoft.com/playwright/python:v1.41.2-jammy
 
 # Set working directory
 WORKDIR /app
 
-# Set environment variables for non-interactive installs
-ENV DEBIAN_FRONTEND=noninteractive
+# Set environment variables
 ENV PYTHONUNBUFFERED=1
 
-# Install essential system tools and fonts needed for Playwright
+# Install additional project-specific system tools
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     git \
     libsqlite3-dev \
-    fonts-liberation \
-    fonts-noto-color-emoji \
-    fonts-unifont \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright and then install its dependencies
-# We run apt-get update again to ensure the playwright script has a fresh cache
-RUN apt-get update && \
-    python -m playwright install chromium && \
-    python -m playwright install-deps chromium && \
-    rm -rf /var/lib/apt/lists/*
+# Install Playwright browser (dependencies are already in the base image)
+RUN python -m playwright install chromium
 
 # Copy the rest of the application code
 COPY . .
