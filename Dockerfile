@@ -9,12 +9,15 @@ WORKDIR /app
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 
-# Install essential system tools
+# Install essential system tools and fonts needed for Playwright
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     git \
     libsqlite3-dev \
+    fonts-liberation \
+    fonts-noto-color-emoji \
+    fonts-unifont \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install python dependencies
