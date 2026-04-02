@@ -56,4 +56,6 @@ def seed_data(keyword="iPhone"):
     print("Seeding complete. Restart the dashboard to see result.")
 
 if __name__ == "__main__":
-    seed_data("iPhone")
+    import sys
+    keyword = sys.argv[1] if len(sys.argv) > 1 else "iPhone"
+    seed_data(keyword)
